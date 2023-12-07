@@ -55,7 +55,7 @@ if ($checkp !== false) {
 // Biến để kiểm soát việc hiển thị thông tin debug
 
 
-
+$showAlertText = ''; // Thêm biến để lưu trữ thông báo
 $debugMode = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -74,12 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if ($existingIndex !== null) {
         // Nếu thuốc đã tồn tại, cập nhật thông tin
-        $_SESSION['medicationsData'][$existingIndex] = [
-            'Medicine_Name' => $medicineName,
-            'Single_Dose' => $singleDose,
-            'Frequency' => $frequency,
-            'Duration' => $duration
-        ];
+        $showAlertText = "Thuốc đã tồn tại trong đơn hàng.";
+        
     }elseif (!empty($medicineName) && !empty($singleDose) && !empty($frequency) && !empty($duration)) {
         $sql_information_medicine = "SELECT * FROM medicines WHERE Medicine_Name = '$medicineName'";
         $medicine_info = Database::db_get_row($sql_information_medicine);
@@ -91,19 +87,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Kiểm tra trường hợp "false" của các giá trị
             if (!is_numeric($singleDose) || $singleDose < $medicine_info['Min_Dose'] || $singleDose > $medicine_info['Max_Dose']) {
-                echo "Lỗi1";
+                $showAlertText = "Liều lượng không phù hợp";
+                
                 $isValid = false;
             } elseif (!is_numeric($frequency) || $frequency > $medicine_info['Max_Frequency']) {
-                echo "Lỗi2";
+                $showAlertText = "Tần suất không phù hợp";
                 $isValid = false;
             } elseif (!is_numeric($duration) || $duration < 1) {
-                echo "Lỗi3";
+                $showAlertText = "Số ngày không phù hợp";
                 $isValid = false;
             } elseif (($singleDose * $frequency) > ($medicine_info['Max_Dose'] * $medicine_info['Max_Frequency'])) {
-                echo "Lỗi4";
+                $showAlertText = "Liều lượng trong một ngày quá cao";
                 $isValid = false;
             } elseif (($singleDose * $frequency) < ($medicine_info['Min_Dose'] * $medicine_info['Max_Frequency'])) {
-                echo "Lỗi5";
+                $showAlertText = "Liều lượng trong một ngày quá thấp";
                 $isValid = false;
             }
 
@@ -143,6 +140,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
 <link rel="stylesheet" href="./adddrug.css">
     <title>Trang chủ</title>
+    <style>
+        /* CSS để căn giữa div có class là "alert" */
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px;
+            background-color: #f44336;
+            color: white;
+            text-align: center;
+            display: <?php echo !empty($showAlertText) ? 'block' : 'none'; ?>; /* Ẩn div khi không có thông báo */
+        }
+    </style>
     
 </head>
 
@@ -156,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <td><input type="text" name="Medicine_Name" id="medicine_name" placeholder="nhập tên thuốc"></td>
         </tr>
         <tr>
-            <th><label for="single_dose">Liều dùng</label></th>
+            <th><label for="single_dose">Liều dùng (viên)</label></th>
             <td><input type="text" name="Single_Dose" id="single_dose" placeholder="nhập liều dùng"></td>
         </tr>
         <tr>
@@ -172,7 +183,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </tr>
     </table>
 </form>
-   
+<?php
+    // Hiển thị thông báo nếu có
+    if (!empty($showAlertText)) {
+        echo '<div class="alert">' . $showAlertText . '</div>';
+    }
+    ?>
     <h3 >Danh sách thuốc</h3>
 
     <table class="forinformation" >
