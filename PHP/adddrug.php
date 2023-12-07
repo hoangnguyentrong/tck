@@ -3,22 +3,26 @@
 session_start();
 
 include('libs/helper.php');
+include('process.php');
 Database::db_connect();
+
 // Bổ sung vào đầu trang PHP để xử lý xóa
+$new_object = new \App\Medician_Test('localhost', 'root', '', 'web');
+
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['action']) && $_GET['action'] == 'delete') {
-  $indexToDelete = $_GET['index'];
-  
-  // Kiểm tra xem chỉ số cần xóa có tồn tại trong mảng không
-  if (isset($_SESSION['medicationsData'][$indexToDelete])) {
-      // Xóa phần tử khỏi mảng
-      unset($_SESSION['medicationsData'][$indexToDelete]);
+    $indexToDelete = $_GET['index'];
 
-      // Tái sắp xếp lại chỉ số mảng
-      $_SESSION['medicationsData'] = array_values($_SESSION['medicationsData']);
+    // Kiểm tra xem chỉ số cần xóa có tồn tại trong mảng không
+    if (isset($_SESSION['medicationsData'][$indexToDelete])) {
+        // Xóa phần tử khỏi mảng
+        unset($_SESSION['medicationsData'][$indexToDelete]);
 
-      // Chuyển hướng để tránh việc xóa lại khi làm mới trang
-      Helper::redirect(Helper::get_url('../TCK/PHP/adddrug.php'));
-  }
+        // Tái sắp xếp lại chỉ số mảng
+        $_SESSION['medicationsData'] = array_values($_SESSION['medicationsData']);
+
+        // Chuyển hướng để tránh việc xóa lại khi làm mới trang
+        Helper::redirect(Helper::get_url('../TCK/PHP/adddrug.php'));
+    }
 }
 
 if (!$_SESSION['email']) {
@@ -53,8 +57,6 @@ if ($checkp !== false) {
 }
 
 // Biến để kiểm soát việc hiển thị thông tin debug
-
-
 $showAlertText = ''; // Thêm biến để lưu trữ thông báo
 $debugMode = false;
 
@@ -65,72 +67,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $frequency = $_POST['Frequency'];
     $duration = $_POST['Duration'];
 
-    $existingIndex = null;
-    foreach ($_SESSION['medicationsData'] as $index => $medication) {
-        if ($medication['Medicine_Name'] === $medicineName) {
-            $existingIndex = $index;
-            break;
-        }
-    }
-    if ($existingIndex !== null) {
-        // Nếu thuốc đã tồn tại, cập nhật thông tin
-        $showAlertText = "Thuốc đã tồn tại trong đơn hàng.";
-        
-    }elseif (!empty($medicineName) && !empty($singleDose) && !empty($frequency) && !empty($duration)) {
-        $sql_information_medicine = "SELECT * FROM medicines WHERE Medicine_Name = '$medicineName'";
-        $medicine_info = Database::db_get_row($sql_information_medicine);
+    // Kiểm tra giá trị trả về từ hàm medication
+    $result = $new_object->medication($medicineName, $singleDose, $frequency, $duration);
 
-        if ($medicine_info) {
-            
-          $unit = $medicine_info['Unit'];
-            $isValid = true;
-
-            // Kiểm tra trường hợp "false" của các giá trị
-            if (!is_numeric($singleDose) || $singleDose < $medicine_info['Min_Dose'] || $singleDose > $medicine_info['Max_Dose']) {
-                $showAlertText = "Liều lượng không phù hợp";
-                
-                $isValid = false;
-            } elseif (!is_numeric($frequency) || $frequency > $medicine_info['Max_Frequency']) {
-                $showAlertText = "Tần suất không phù hợp";
-                $isValid = false;
-            } elseif (!is_numeric($duration) || $duration < 1) {
-                $showAlertText = "Số ngày không phù hợp";
-                $isValid = false;
-            } elseif (($singleDose * $frequency) > ($medicine_info['Max_Dose'] * $medicine_info['Max_Frequency'])) {
-                $showAlertText = "Liều lượng trong một ngày quá cao";
-                $isValid = false;
-            } elseif (($singleDose * $frequency) < ($medicine_info['Min_Dose'] * $medicine_info['Max_Frequency'])) {
-                $showAlertText = "Liều lượng trong một ngày quá thấp";
-                $isValid = false;
+    // Kiểm tra giá trị $result
+    if ($result === "ok") {
+        // Kiểm tra xem thuốc đã tồn tại trong đơn hàng hay không
+        $existingIndex = null;
+        foreach ($_SESSION['medicationsData'] as $index => $medication) {
+            if ($medication['Medicine_Name'] === $medicineName) {
+                $existingIndex = $index;
+                break;
             }
-
-            if ($isValid) {
-                // Lấy các giá trị từ form và thêm vào mảng
-                $_SESSION['medicationsData'][] = [
-                    'Medicine_Name' => $medicine_info['Medicine_Name'],
-                    'Single_Dose' => $singleDose,
-                    'Frequency' => $frequency,
-                    'Duration' => $duration
-                ];
-                Helper::redirect(Helper::get_url('../TCK/PHP/adddrug.php'));
-            } else {
-                // Thêm khối mã này để kiểm tra lỗi khi debugMode được kích hoạt
-                if ($debugMode) {
-                    echo "Error fetching medicine information. SQL Query: $sql_information_medicine";
-                    echo '<pre>';
-                    print_r($medicine_info);
-                    echo '</pre>';
-                }
-            }
-
-            
         }
-    }
 
-    // Nếu có tên thuốc và các thông tin khác, thêm vào cơ sở dữ liệu
-    
+        if ($existingIndex !== null) {
+            // Nếu thuốc đã tồn tại, cập nhật thông tin
+            $showAlertText = "Thuốc đã tồn tại trong đơn hàng.";
+        } else {
+            // Nếu thuốc chưa tồn tại, thêm vào mảng
+            $_SESSION['medicationsData'][] = [
+                'Medicine_Name' => $medicineName,
+                'Single_Dose' => $singleDose,
+                'Frequency' => $frequency,
+                'Duration' => $duration
+            ];
+
+            Helper::redirect(Helper::get_url('../TCK/PHP/adddrug.php'));
+        }
+    } else {
+        // Hiển thị thông báo lỗi nếu có
+        $showAlertText = $result;
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -138,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
     <meta charset="UTF-8">
-<link rel="stylesheet" href="./adddrug.css">
+    <link rel="stylesheet" href="./adddrug.css">
     <title>Trang chủ</title>
     <style>
         /* CSS để căn giữa div có class là "alert" */
@@ -154,44 +123,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: <?php echo !empty($showAlertText) ? 'block' : 'none'; ?>; /* Ẩn div khi không có thông báo */
         }
     </style>
-    
 </head>
 
 <body>
     <h1>Thêm thuốc</h1>
     <form action="" method="POST" class="formsearch">
-    <input type="hidden" name="prescription_id" value="<?php echo $search_patientID; ?>">
-    <table class="putinfor">
-        <tr>
-            <th><label for="medicine_name">Tên thuốc</label></th>
-            <td><input type="text" name="Medicine_Name" id="medicine_name" placeholder="nhập tên thuốc"></td>
-        </tr>
-        <tr>
-            <th><label for="single_dose">Liều dùng (viên)</label></th>
-            <td><input type="text" name="Single_Dose" id="single_dose" placeholder="nhập liều dùng"></td>
-        </tr>
-        <tr>
-            <th><label for="frequency">Số lần/ngày</label></th>
-            <td><input type="text" name="Frequency" id="frequency" placeholder="nhập số lần"></td>
-        </tr>
-        <tr>
-            <th><label for="duration">Số ngày</label></th>
-            <td><input type="text" name="Duration" id="duration" placeholder="nhập Số ngày"></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" name="view" value="Thêm thuốc"></td>
-        </tr>
-    </table>
-</form>
-<?php
+        <input type="hidden" name="prescription_id" value="<?php echo $patientIDtable1; ?>">
+        <table class="putinfor">
+            <tr>
+                <th><label for="medicine_name">Tên thuốc</label></th>
+                <td><input type="text" name="Medicine_Name" id="medicine_name" placeholder="nhập tên thuốc"></td>
+            </tr>
+            <tr>
+                <th><label for="single_dose">Liều dùng (viên)</label></th>
+                <td><input type="text" name="Single_Dose" id="single_dose" placeholder="nhập liều dùng"></td>
+            </tr>
+            <tr>
+                <th><label for="frequency">Số lần/ngày</label></th>
+                <td><input type="text" name="Frequency" id="frequency" placeholder="nhập số lần"></td>
+            </tr>
+            <tr>
+                <th><label for="duration">Số ngày</label></th>
+                <td><input type="text" name="Duration" id="duration" placeholder="nhập Số ngày"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" name="view" value="Thêm thuốc"></td>
+            </tr>
+        </table>
+    </form>
+    <?php
     // Hiển thị thông báo nếu có
     if (!empty($showAlertText)) {
         echo '<div class="alert">' . $showAlertText . '</div>';
     }
     ?>
-    <h3 >Danh sách thuốc</h3>
+    <h3>Danh sách thuốc</h3>
 
-    <table class="forinformation" >
+    <table class="forinformation">
         <tr>
             <th>Tên thuốc</th>
             <th>Đơn vị</th>
@@ -204,9 +172,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Kiểm tra nếu mảng tồn tại và không rỗng
         if (!empty($_SESSION['medicationsData'])) {
             foreach ($_SESSION['medicationsData'] as $index => $medication) {
-
-              $sql_get_unit = "SELECT Unit FROM medicines WHERE Medicine_Name = '{$medication['Medicine_Name']}'";
-              $unit_info = Database::db_get_row($sql_get_unit);
+                $sql_get_unit = "SELECT Unit FROM medicines WHERE Medicine_Name = '{$medication['Medicine_Name']}'";
+                $unit_info = Database::db_get_row($sql_get_unit);
                 echo '<tr>';
                 echo '<td>' . $medication['Medicine_Name'] . '</td>';
                 echo '<td>' . $unit_info['Unit'] . '</td>';
@@ -219,17 +186,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '</td>';
                 echo '</tr>';
             }
-        } 
-       
+        }
         ?>
     </table>
-   <table >
-    
-    <a class="nav" href="./displaydetail.php">Xác Nhận</a>
-   </table>
-   <table>
-    <a class="nav1" href="./search.php">Quay lại</a>
-   </table>
+    <table>
+        <a class="nav" href="./displaydetail.php">Xác Nhận</a>
+    </table>
+    <table>
+        <a class="nav1" href="./search.php">Quay lại</a>
+    </table>
 </body>
 
 </html>
