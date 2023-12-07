@@ -156,9 +156,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['print_prescription']))
                 echo '<p>Có lỗi xảy ra khi truy vấn Medicine_ID.</p>';
             }
         }
-        session_destroy();
+        
         // Chuyển hướng sau khi hoàn thành vòng lặp
+        unset($_SESSION['medicationsData']);
         Helper::redirect(Helper::get_url('../TCK/PHP/search.php?success=1'));
+        
 
     } else {
         // Xử lý lỗi khi thêm vào prescriptions

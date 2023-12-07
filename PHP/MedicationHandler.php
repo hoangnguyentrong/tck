@@ -10,7 +10,9 @@ class MedicationHandler
 
         if (!is_numeric($singleDose) || $singleDose < $medicine_info['Min_Dose'] || $singleDose > $medicine_info['Max_Dose']) {
             echo "Lỗi1";
+            
             $isValid = false;
+            
         } elseif (!is_numeric($frequency) || $frequency > $medicine_info['Max_Frequency']) {
             echo "Lỗi2";
             $isValid = false;
