@@ -1,0 +1,107 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  
+  text-align: center;
+}
+h3{
+  padding: 20px;
+  text-align: center;
+}
+/* CSS cho table */
+.formsearch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  margin: 0;
+}
+
+.formsearch table.putinfor {
+  border: 2px solid #3498db; /* Màu viền của bảng */
+  border-collapse: collapse;
+  width: 20%; /* Độ rộng của bảng */
+  max-width: 600px; /* Giới hạn độ rộng tối đa */
+  margin-top: 20px; /* Khoảng cách giữa form và bảng */
+}
+
+.formsearch table.putinfor th,
+.formsearch table.putinfor td {
+  border: 1px solid #3498db; /* Màu viền của ô */
+  padding: 8px; /* Khoảng cách giữa nội dung và viền */
+  text-align: left; /* Căn trái nội dung trong ô */
+}
+
+.formsearch table.putinfor th {
+  background-color: #3498db; /* Màu nền của ô header */
+  color: white; /* Màu chữ của ô header */
+}
+
+.formsearch table.putinfor input[type="text"] {
+  width: 80%;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.formsearch table.putinfor input[type="submit"] {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+}
+
+
+.forinformation {
+  border-collapse: collapse;
+  width: 90%; /* Điều chỉnh độ rộng của bảng */
+  max-width: 1200px; /* Giới hạn độ rộng tối đa */
+  margin: auto; /* Căn giữa bảng */
+}
+
+.forinformation th, .forinformation td {
+  border: 1px solid #3498db; /* Màu viền của ô */
+  padding: 8px; /* Khoảng cách giữa nội dung và viền */
+  text-align: center; /* Căn giữa nội dung trong ô */
+}
+
+.forinformation th {
+  background-color: #3498db; /* Màu nền của ô header */
+  color: white; /* Màu chữ của ô header */
+}
+
+.forinformation input[type="submit"] {
+  background-color: #3498db;
+  color: white;
+  padding: 5px 5px;
+  border: none;
+  cursor: pointer;
+}
+ a {
+  text-decoration: none;
+  margin-left: 25px;
+  background: #1977cc;
+  color: #fff;
+  border-radius: 50px;
+  padding: 8px 25px;
+  white-space: nowrap;
+  transition: 0.3s;
+  font-size: 14px;
+  display: inline-block;
+}
+.nav {
+  background: red;
+  position: absolute;
+  left: 180vh;
+  top: 100vh;
+}
+.nav1{
+  position: absolute;
+  left: 1vh;
+  top: 100vh
+}
