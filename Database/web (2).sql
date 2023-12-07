@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 07, 2023 lúc 03:39 PM
+-- Thời gian đã tạo: Th12 07, 2023 lúc 08:48 PM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.2.4
 
@@ -39,9 +39,9 @@ CREATE TABLE `doctors` (
 
 INSERT INTO `doctors` (`Email_doctor`, `FullName_doctor`, `passwords_doctor`) VALUES
 ('hoang@123', 'nguyễn trọng', '111111'),
-('hoangnguyen30092003@gmail.com', 'hoangnguyen', '111111'),
+('hoangnguyen30092003@gmail.com', 'Nguyễn Trọng Hoàng', '111111'),
 ('munii@gamil', 'hàuheuf', '111111'),
-('viet.2k3.gm@gmail.com', 'hoangnguyen', '11111');
+('viet.2k3.gm@gmail.com', 'Lê Văn Việt', '11111');
 
 -- --------------------------------------------------------
 
@@ -63,18 +63,18 @@ CREATE TABLE `medicines` (
 --
 
 INSERT INTO `medicines` (`Medicine_ID`, `Medicine_Name`, `Min_Dose`, `Max_Dose`, `Max_Frequency`, `Unit`) VALUES
-('M01', 'Paracetamol', 50, 500, 3, 'mg'),
-('M010', 'Chymotrypsin', 50, 400, 2, 'mg'),
-('M011', 'Rodogyl', 10, 120, 3, 'mg'),
-('M012', 'Elevit', 5, 150, 3, 'mg'),
-('M02', 'Ibuprofen', 100, 800, 2, 'mg'),
-('M03', 'Aspirin', 20, 200, 4, 'mg'),
-('M04', 'Loratadine', 150, 1500, 3, 'mg'),
-('M05', 'Omeprazole', 50, 425, 2, 'mg'),
-('M06', 'Omeprazole', 250, 2500, 1, 'mg'),
-('M07', 'Ciprofloxacin', 50, 500, 2, 'mg'),
-('M08', 'Metformin', 20, 240, 3, 'mg'),
-('M09', 'Simvastatin', 100, 1400, 4, 'mg');
+('M01', 'Paracetamol', 2, 4, 3, '10 mg'),
+('M010', 'Chymotrypsin', 2, 4, 2, '20 mg'),
+('M011', 'Rodogyl', 1, 3, 3, '10 mg'),
+('M012', 'Elevit', 1, 3, 3, '10 mg'),
+('M02', 'Ibuprofen', 2, 4, 2, '20 mg'),
+('M03', 'Aspirin', 1, 3, 4, '30 mg'),
+('M04', 'Loratadine', 1, 3, 3, '10 ml'),
+('M05', 'Omeprazole', 2, 4, 2, '20 ml'),
+('M06', 'Omeprazole', 1, 3, 1, '50 mg'),
+('M07', 'Ciprofloxacin', 2, 4, 2, '10 mg'),
+('M08', 'Metformin', 1, 3, 3, '10 mg'),
+('M09', 'Simvastatin', 1, 3, 4, '10 mg');
 
 -- --------------------------------------------------------
 
@@ -90,24 +90,25 @@ CREATE TABLE `patients` (
   `Address` varchar(255) NOT NULL,
   `Phone_number` varchar(15) NOT NULL,
   `Email_patient` varchar(255) NOT NULL,
-  `Health_Insurance_ID` varchar(20) NOT NULL
+  `Health_Insurance_ID` varchar(20) NOT NULL,
+  `diagnose` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `patients`
 --
 
-INSERT INTO `patients` (`Patient_ID`, `Full_Name_patient`, `Date_of_Birth`, `Gender`, `Address`, `Phone_number`, `Email_patient`, `Health_Insurance_ID`) VALUES
-('P008', 'Tâm Nguyễn', '1995-01-30', 'Nữ', '777 Đường Số 7, Thành phố', '03332221111', 'tam@example.com', 'H87654'),
-('P009', 'Đức Nguyễn', '1988-11-12', 'Nam', '999 Đường Số 8, Thành phố', '05554443333', 'duc@example.com', 'H34567'),
-('P010', 'Chị Lan Nguyễn', '1998-06-18', 'Nữ', '333 Đường Số 9, Thành phố', '02223334444', 'lan@example.com', 'H65432'),
-('P011', 'Tùng Nguyễn', '1990-04-02', 'Nam', '888 Đường Số 10, Thành phố', '04445556666', 'tung@example.com', 'H98765'),
-('P02', 'Hải Nguyễn', '1985-08-20', 'Nam', '789 Đường Số 1, Thành phố', '01112223333', 'hai@example.com', 'H67890'),
-('P03', 'Lan Nguyễn', '1992-03-15', 'Nữ', '456 Đường Số 2, Thành phố', '03334445555', 'lan@example.com', 'H54321'),
-('P04', 'Hà Nguyễn', '1980-12-10', 'Nữ', '123 Đường Số 3, Thành phố', '06667778888', 'ha@example.com', 'H12345'),
-('P05', 'Hoàng Nguyễn', '2000-05-05', 'Nam', '987 Đường Số 4, Thành phố', '09998887777', 'hoang@example.com', 'H98765'),
-('P06', 'Hương Nguyễn', '1977-09-25', 'Nữ', '111 Đường Số 5, Thành phố', '02221119999', 'huong@example.com', 'H45678'),
-('P07', 'Trung Nguyễn', '1982-07-08', 'Nam', '555 Đường Số 6, Thành phố', '07778889999', 'trung@example.com', 'H23456');
+INSERT INTO `patients` (`Patient_ID`, `Full_Name_patient`, `Date_of_Birth`, `Gender`, `Address`, `Phone_number`, `Email_patient`, `Health_Insurance_ID`, `diagnose`) VALUES
+('P008', 'Nguyễn Văn Tâm', '1995-01-30', 'Nữ', '777 Đường Số 7, Thành phố', '03332221111', 'tam@example.com', 'H87654', 'Sốt cao '),
+('P009', 'Nguyễn Trọng Đức', '1988-11-12', 'Nam', '999 Đường Số 8, Thành phố', '05554443333', 'duc@example.com', 'H34567', 'Viên họng '),
+('P010', 'Phan Thị Lan', '1998-06-18', 'Nữ', '333 Đường Số 9, Thành phố', '02223334444', 'lan@example.com', 'H65432', 'Tiểu đường'),
+('P011', 'Nguyễn Văn Tùng', '1990-04-02', 'Nam', '888 Đường Số 10, Thành phố', '04445556666', 'tung@example.com', 'H98765', 'Cảm lạnh'),
+('P02', 'Nguyễn Quang Hải', '1985-08-20', 'Nam', '789 Đường Số 1, Thành phố', '01112223333', 'hai@example.com', 'H67890', 'Đau lưng'),
+('P03', 'Trần Như', '1992-03-15', 'Nữ', '456 Đường Số 2, Thành phố', '03334445555', 'lan@example.com', 'H54321', 'Tiêu chảy'),
+('P04', 'Đinh Văn Hà', '1980-12-10', 'Nữ', '123 Đường Số 3, Thành phố', '06667778888', 'ha@example.com', 'H12345', 'Huyết áp cao'),
+('P05', 'Nguyễn Hoàng Tuấn', '2000-05-05', 'Nam', '987 Đường Số 4, Thành phố', '09998887777', 'hoang@example.com', 'H98765', 'Đau răng'),
+('P06', 'Nguyễn Chơn Hương', '1977-09-25', 'Nữ', '111 Đường Số 5, Thành phố', '02221119999', 'huong@example.com', 'H45678', 'Mất ngủ'),
+('P07', 'Nguyễn Tấn Trung', '1982-07-08', 'Nam', '555 Đường Số 6, Thành phố', '07778889999', 'trung@example.com', 'H23456', 'Viên khớp');
 
 -- --------------------------------------------------------
 
@@ -192,7 +193,14 @@ INSERT INTO `prescriptiondetails` (`Prescription_ID`, `Medicine_ID`, `Single_Dos
 (64, 'M011', 100, 2, 2),
 (64, 'M012', 100, 2, 2),
 (65, 'M03', 100, 2, 2),
-(65, 'M011', 1000, 2, 2);
+(65, 'M011', 1000, 2, 2),
+(66, 'M011', 2, 2, 2),
+(67, 'M011', 2, 2, 2),
+(67, 'M012', 2, 2, 2),
+(68, 'M011', 2, 2, 2),
+(69, 'M011', 2, 2, 2),
+(70, 'M011', 2, 2, 2),
+(71, 'M011', 2, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -247,7 +255,13 @@ INSERT INTO `prescriptions` (`Prescription_ID`, `Patient_ID`, `Email_doctor`, `D
 (62, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 11:43:19'),
 (63, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 13:47:04'),
 (64, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 13:51:32'),
-(65, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 13:57:13');
+(65, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 13:57:13'),
+(66, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 16:36:11'),
+(67, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 16:37:01'),
+(68, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 16:37:59'),
+(69, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 16:38:52'),
+(70, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 16:42:03'),
+(71, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 19:47:27');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -294,7 +308,7 @@ ALTER TABLE `prescriptions`
 -- AUTO_INCREMENT cho bảng `prescriptions`
 --
 ALTER TABLE `prescriptions`
-  MODIFY `Prescription_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `Prescription_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

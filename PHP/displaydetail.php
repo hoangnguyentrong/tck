@@ -73,6 +73,7 @@ echo '<p>Địa chỉ liên hệ: ' . $rowp['Address'] . '</p>';
 echo '<p>Số điện thoại: ' . $rowp['Phone_number'] . '</p>';
 echo '<p>Email bệnh nhân: ' . $rowp['Email_patient'] . '</p>';
 echo '<p>Mã bảo hiểm: ' . $rowp['Health_Insurance_ID'] . '</p>';
+echo '<p>Chuẩn đoán: ' . $rowp['diagnose'] . '</p>';
 
     }
 }

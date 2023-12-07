@@ -52,7 +52,7 @@ foreach ($check as $row) {
             <th>Họ và tên</th>
             <th>Giới tính</th>
             <th>Mã bảo hiểm</th>
-            <th>Số điện thoại</th>
+            <th>Chuẩn đoán</th>
             <th>Tác vụ</th>
         </tr>
         <?php
@@ -81,7 +81,7 @@ foreach ($check as $row) {
                     echo '<td>' . $check_patient["Full_Name_patient"] . '</td>';
                     echo '<td>' . $check_patient["Gender"] . '</td>';
                     echo '<td>' . $check_patient["Health_Insurance_ID"] . '</td>';
-                    echo '<td>' . $check_patient["Phone_number"] . '</td>';
+                    echo '<td>' . $check_patient["diagnose"] . '</td>';
                     echo '<td>
                             <form action="" method="get">
                             <input type="hidden" name="email_doctor" value="' . $_SESSION['email'] . '">
