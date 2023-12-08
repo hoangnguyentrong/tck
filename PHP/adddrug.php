@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <tr>
             <th>Tên thuốc</th>
             <th>Đơn vị</th>
-            <th>Liều dùng</th>
+            <th>Liều dùng(viên)</th>
             <th>Số lần/ngày</th>
             <th>Số ngày</th>
             <th>Tác vụ</th>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 07, 2023 lúc 08:48 PM
+-- Thời gian đã tạo: Th12 08, 2023 lúc 06:11 AM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.2.4
 
@@ -71,7 +71,7 @@ INSERT INTO `medicines` (`Medicine_ID`, `Medicine_Name`, `Min_Dose`, `Max_Dose`,
 ('M03', 'Aspirin', 1, 3, 4, '30 mg'),
 ('M04', 'Loratadine', 1, 3, 3, '10 ml'),
 ('M05', 'Omeprazole', 2, 4, 2, '20 ml'),
-('M06', 'Omeprazole', 1, 3, 1, '50 mg'),
+('M06', 'Caltrate', 1, 3, 1, '50 mg'),
 ('M07', 'Ciprofloxacin', 2, 4, 2, '10 mg'),
 ('M08', 'Metformin', 1, 3, 3, '10 mg'),
 ('M09', 'Simvastatin', 1, 3, 4, '10 mg');
@@ -200,7 +200,11 @@ INSERT INTO `prescriptiondetails` (`Prescription_ID`, `Medicine_ID`, `Single_Dos
 (68, 'M011', 2, 2, 2),
 (69, 'M011', 2, 2, 2),
 (70, 'M011', 2, 2, 2),
-(71, 'M011', 2, 2, 2);
+(71, 'M011', 2, 2, 2),
+(72, 'M011', 2, 2, 2),
+(74, 'M011', 2, 2, 2),
+(75, 'M011', 2, 2, 2),
+(76, 'M010', 2, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -261,7 +265,12 @@ INSERT INTO `prescriptions` (`Prescription_ID`, `Patient_ID`, `Email_doctor`, `D
 (68, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 16:37:59'),
 (69, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 16:38:52'),
 (70, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 16:42:03'),
-(71, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 19:47:27');
+(71, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 19:47:27'),
+(72, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 21:49:11'),
+(73, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-07 22:27:32'),
+(74, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-08 02:40:16'),
+(75, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-08 05:04:27'),
+(76, 'P04', 'hoangnguyen30092003@gmail.com', '2023-12-08 05:08:45');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -308,7 +317,7 @@ ALTER TABLE `prescriptions`
 -- AUTO_INCREMENT cho bảng `prescriptions`
 --
 ALTER TABLE `prescriptions`
-  MODIFY `Prescription_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `Prescription_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

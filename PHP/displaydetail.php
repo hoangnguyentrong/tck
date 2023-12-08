@@ -86,7 +86,7 @@ if (isset($_SESSION['medicationsData']) && !empty($_SESSION['medicationsData']))
     echo '<tr>
     <th>Tên thuốc</th>
     <th>Đơn vị</th>
-    <th>Liều dùng</th>
+    <th>Liều dùng(viên)</th>
     <th>Số lần/ngày</th>
     <th>Số ngày</th>
     </tr>';
