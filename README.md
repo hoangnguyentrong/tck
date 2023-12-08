@@ -11,7 +11,7 @@
 
 ### Sản Phẩm:
 1. **Script Tạo Database**:
-   - Tệp SQL: `create_database.sql`
+   - Tệp SQL: `web.sql`
    - Bao gồm các bảng và dữ liệu cần thiết để chạy sản phẩm.
 
 2. **Bước Triển Khai**:
@@ -22,7 +22,7 @@
    - Cài đặt và mở XAMPP: [XAMPP Download](https://www.apachefriends.org/download.html)
    - Chạy XAMPP Control Panel và bật Apache và MySQL.
    - Thực hiện script SQL để tạo database.
-   - Cấu hình file kết nối database (`web.php` hoặc tương tự).
+   - Cấu hình file kết nối database (`helper.php`).
    - Truy cập `http://localhost/tck` trong trình duyệt.
 
 3. **Chạy Unit Test Script**:
