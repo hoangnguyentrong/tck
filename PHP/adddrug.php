@@ -73,7 +73,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra giá trị $result
     if ($result === "ok") {
         // Kiểm tra xem thuốc đã tồn tại trong đơn hàng hay không
-        $existingIndex = null;
+        if (count($_SESSION['medicationsData']) >= 5) {
+            $showAlertText = "Không thể thêm nhiều hơn 4 loại thuốc.";
+        } else {$existingIndex = null;
         foreach ($_SESSION['medicationsData'] as $index => $medication) {
             if ($medication['Medicine_Name'] === $medicineName) {
                 $existingIndex = $index;
@@ -94,11 +96,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ];
 
             Helper::redirect(Helper::get_url('../TCK/PHP/adddrug.php'));
-        }
+        }}
+
     } else {
         // Hiển thị thông báo lỗi nếu có
         $showAlertText = $result;
     }
+    
 }
 ?>
 
