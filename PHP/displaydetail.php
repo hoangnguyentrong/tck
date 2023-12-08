@@ -3,21 +3,21 @@ session_start();
 include('libs/helper.php');
 Database::db_connect();
 // Bổ sung vào đầu trang PHP để xử lý xóa
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['action']) && $_GET['action'] == 'delete') {
-  $indexToDelete = $_GET['index'];
+// if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['action']) && $_GET['action'] == 'delete') {
+//   $indexToDelete = $_GET['index'];
   
-  // Kiểm tra xem chỉ số cần xóa có tồn tại trong mảng không
-  if (isset($_SESSION['medicationsData'][$indexToDelete])) {
-      // Xóa phần tử khỏi mảng
-      unset($_SESSION['medicationsData'][$indexToDelete]);
+//   // Kiểm tra xem chỉ số cần xóa có tồn tại trong mảng không
+//   if (isset($_SESSION['medicationsData'][$indexToDelete])) {
+//       // Xóa phần tử khỏi mảng
+//       unset($_SESSION['medicationsData'][$indexToDelete]);
 
-      // Tái sắp xếp lại chỉ số mảng
-      $_SESSION['medicationsData'] = array_values($_SESSION['medicationsData']);
+//       // Tái sắp xếp lại chỉ số mảng
+//       $_SESSION['medicationsData'] = array_values($_SESSION['medicationsData']);
 
-      // Chuyển hướng để tránh việc xóa lại khi làm mới trang
-      Helper::redirect(Helper::get_url('../TCK/PHP/adddrug.php'));
-  }
-}
+//       // Chuyển hướng để tránh việc xóa lại khi làm mới trang
+//       Helper::redirect(Helper::get_url('../TCK/PHP/adddrug.php'));
+//   }
+// }
 
 if (!$_SESSION['email']) {
     Helper::redirect(Helper::get_url('../TCK/PHP/log_in.php'));

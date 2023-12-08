@@ -51,7 +51,7 @@ class Medician_Test{
           return 'Liều lượng quá cao';
         }
         if($frequency > $frequency_max){
-          return 'The frequency of dosing is too high';
+          return 'Tần suất quá cao';
         }
         // if (!Medician_Test::check_duration($duration, $total_dose)){
         //   return 'Duration not valid';
@@ -60,5 +60,5 @@ class Medician_Test{
       }
   }
 }
-$new_object = new Medician_Test ('localhost', 'root', '', 'web');
+$new_object = new Medician_Test('localhost', 'root', '', 'web');
 ?>

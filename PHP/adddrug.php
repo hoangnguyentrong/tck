@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($existingIndex !== null) {
             // Nếu thuốc đã tồn tại, cập nhật thông tin
-            $showAlertText = "Thuốc đã tồn tại trong đơn hàng.";
+            $showAlertText = "Thuốc đã tồn tại trong danh sách.";
         } else {
             // Nếu thuốc chưa tồn tại, thêm vào mảng
             $_SESSION['medicationsData'][] = [
